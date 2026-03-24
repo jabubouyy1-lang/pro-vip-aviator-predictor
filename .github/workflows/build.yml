@@ -1,0 +1,25 @@
+name: Build APK
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Buildozer
+      run: |
+        pip install buildozer
+        sudo apt update
+        sudo apt install -y build-essential libssl-dev libffi-dev python3-dev
+
+    - name: Build APK
+      run: buildozer android debug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: apk
+        path: bin/*.apk
